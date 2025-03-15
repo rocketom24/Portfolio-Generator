@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MyDynamicFolio</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link href="styles.css" rel="stylesheet" />
+  </head>
+  <body
+    class="min-h-screen bg-gradient-to-br from-purple-500 via-pink-500 to-red-500"
+  >
+    <div class="container mx-auto px-4 py-8">
+      <div class="text-center mb-12">
+        <h1 class="text-4xl md:text-6xl font-bold text-white mb-4">
+          MyDynamicFolio
+        </h1>
+        <p class="text-white text-lg font-medium">
+          Create your professional portfolio in minutes
+        </p>
+      </div>
+
+      <div class="form-container p-8">
+        <div class="flex justify-center mb-8">
+          <div
+            id="imagePreviewContainer"
+            class="w-32 h-32 rounded-full bg-white/20 flex items-center justify-center cursor-pointer hover:bg-white/30 transition-all hover:border-2 hover:border-pink-400/50"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-8 h-8 text-white"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="17 8 12 3 7 8"></polyline>
+              <line x1="12" y1="3" x2="12" y2="15"></line>
+            </svg>
+          </div>
+          <input type="file" id="fileInput" accept="image/*" class="hidden" />
+        </div>
+
+        <form id="portfolioForm" class="space-y-6">
+          <div class="space-y-2">
+            <label for="fullName" class="block text-white text-sm font-medium"
+              >Full Name</label
+            >
+            <input
+              type="text"
+              id="fullName"
+              placeholder="Enter your full name"
+              required
+              class="form-input"
+            />
+          </div>
+
+          <div class="space-y-2">
+            <label
+              for="contactInfo"
+              class="block text-white text-sm font-medium"
+              >Contact Information</label
+            >
+            <input
+              type="text"
+              id="contactInfo"
+              placeholder="Email, phone, LinkedIn"
+              required
+              class="form-input"
+            />
+          </div>
+
+          <div class="space-y-2">
+            <label for="bio" class="block text-white text-sm font-medium"
+              >Short Bio</label
+            >
+            <textarea
+              id="bio"
+              placeholder="Tell us about yourself"
+              required
+              class="form-input h-32"
+            ></textarea>
+          </div>
+
+          <div class="space-y-2">
+            <label for="skills" class="block text-white text-sm font-medium"
+              >Soft Skills & Technical Skills</label
+            >
+            <input
+              type="text"
+              id="skills"
+              placeholder="Communication, Leadership, JavaScript, Python, etc."
+              required
+              class="form-input"
+            />
+          </div>
+
+          <div class="space-y-2">
+            <label for="education" class="block text-white text-sm font-medium"
+              >Academic Background</label
+            >
+            <input
+              type="text"
+              id="education"
+              placeholder="Your degrees and certifications"
+              class="form-input"
+            />
+          </div>
+
+          <div class="space-y-2">
+            <label for="experience" class="block text-white text-sm font-medium"
+              >Work Experience</label
+            >
+            <textarea
+              id="experience"
+              placeholder="Your work history, positions, and achievements"
+              class="form-input h-32"
+            ></textarea>
+          </div>
+
+          <div class="space-y-2">
+            <label for="projects" class="block text-white text-sm font-medium"
+              >Projects/Publications</label
+            >
+            <textarea
+              id="projects"
+              placeholder="Your notable projects or publications"
+              class="form-input h-32"
+            ></textarea>
+          </div>
+
+          <div class="flex flex-wrap gap-4 pt-6">
+            <button
+              type="button"
+              onclick="generatePortfolio()"
+              class="gradient-button flex-1 px-6 py-3 text-white rounded-lg font-medium flex items-center justify-center gap-2 hover:scale-105"
+            >
+              Generate Portfolio
+            </button>
+            <button
+              type="button"
+              onclick="savePortfolio()"
+              class="gradient-button flex-1 px-6 py-3 text-white rounded-lg font-medium flex items-center justify-center gap-2 hover:scale-105"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-5 h-5"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"
+                ></path>
+                <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                <polyline points="7 3 7 8 15 8"></polyline>
+              </svg>
+              Save Portfolio
+            </button>
+            <button
+              type="button"
+              onclick="downloadPDF()"
+              class="gradient-button flex-1 px-6 py-3 text-white rounded-lg font-medium flex items-center justify-center gap-2 hover:scale-105"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-5 h-5"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+              Download as PDF
+            </button>
+            <button
+              type="button"
+              onclick="togglePortfolioView()"
+              class="gradient-button flex-1 px-6 py-3 text-white rounded-lg font-medium flex items-center justify-center gap-2 hover:scale-105"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-5 h-5"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+              Show Portfolio
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div id="portfolioModal" class="modal-overlay hidden">
+        <div class="modal-content">
+          <h2 class="text-2xl font-bold text-white mb-6">Portfolio Preview</h2>
+          <div class="space-y-4" id="portfolioPreview"></div>
+        </div>
+      </div>
+
+      <footer class="mt-16 text-center text-white">
+        <div class="max-w-4xl mx-auto px-4">
+          <h3 class="text-2xl font-bold mb-4 text-white">MyDynamicFolio</h3>
+          <p class="mb-4 text-white">Create beautiful portfolios with ease</p>
+          <div class="border-t border-white/20 pt-4">
+            <p class="text-white">
+              &copy; <span id="currentYear"></span> MyDynamicFolio. All rights
+              reserved.
+            </p>
+          </div>
+        </div>
+      </footer>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
