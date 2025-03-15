@@ -9,6 +9,7 @@
       rel="stylesheet"
     />
     <link href="styles.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
   </head>
   <body
     class="min-h-screen bg-gradient-to-br from-purple-500 via-pink-500 to-red-500"
@@ -168,7 +169,7 @@
             </button>
             <button
               type="button"
-              onclick="downloadPDF()"
+              onclick="showSavedPortfolios()"
               class="gradient-button flex-1 px-6 py-3 text-white rounded-lg font-medium flex items-center justify-center gap-2 hover:scale-105"
             >
               <svg
@@ -207,13 +208,6 @@
               </svg>
               Show Portfolio
             </button>
-            <button
-              type="button"
-              onclick="fetchPortfolios()"
-              class="gradient-button flex-1 px-6 py-3 text-white rounded-lg font-medium flex items-center justify-center gap-2 hover:scale-105"
-            >
-              Fetch Portfolios
-            </button>
           </div>
         </form>
       </div>
@@ -224,6 +218,38 @@
         <div class="modal-content">
           <h2 class="text-2xl font-bold text-white mb-6">Portfolio Preview</h2>
           <div class="space-y-4" id="portfolioPreview"></div>
+          <div class="flex justify-end gap-4 mt-6">
+            <button
+              type="button"
+              onclick="confirmPreview(true)"
+              class="gradient-button px-6 py-3 text-white rounded-lg font-medium hover:scale-105"
+            >
+              Yes
+            </button>
+            <button
+              type="button"
+              onclick="confirmPreview(false)"
+              class="gradient-button px-6 py-3 text-white rounded-lg font-medium hover:scale-105"
+            >
+              No
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div id="savedPortfoliosModal" class="modal-overlay hidden">
+        <div class="modal-content max-h-96 overflow-y-auto">
+          <h2 class="text-2xl font-bold text-white mb-6">Saved Portfolios</h2>
+          <ul id="savedPortfoliosList" class="space-y-4 list-none p-0"></ul>
+          <div class="flex justify-end gap-4 mt-6">
+            <button
+              type="button"
+              onclick="closeSavedPortfoliosModal()"
+              class="gradient-button px-6 py-3 text-white rounded-lg font-medium hover:scale-105"
+            >
+              Cancel
+            </button>
+          </div>
         </div>
       </div>
 

@@ -129,3 +129,29 @@
   border: 2px solid rgba(255, 255, 255, 0.8) !important;
   box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
 }
+
+#savedPortfoliosList li:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  transition: background-color 0.3s ease;
+}
+
+#savedPortfoliosList li {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  transition: background-color 0.3s ease;
+}
+
+#savedPortfoliosList li:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+#savedPortfoliosList li img {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  object-fit: cover;
+}

@@ -50,6 +50,19 @@ app.get('/api/portfolios', async (req, res) => {
     }
 });
 
+// API endpoint to retrieve a single portfolio by ID
+app.get('/api/portfolios/:id', async (req, res) => {
+    try {
+        const portfolio = await Portfolio.findById(req.params.id);
+        if (!portfolio) {
+            return res.status(404).send('Portfolio not found');
+        }
+        res.status(200).send(portfolio);
+    } catch (error) {
+        res.status(400).send(error);
+    }
+});
+
 // Start the server
 const port = process.env.PORT || 5000;
 app.listen(port, () => console.log(`Server running on port ${port}`));
