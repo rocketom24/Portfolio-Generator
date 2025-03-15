@@ -207,9 +207,18 @@
               </svg>
               Show Portfolio
             </button>
+            <button
+              type="button"
+              onclick="fetchPortfolios()"
+              class="gradient-button flex-1 px-6 py-3 text-white rounded-lg font-medium flex items-center justify-center gap-2 hover:scale-105"
+            >
+              Fetch Portfolios
+            </button>
           </div>
         </form>
       </div>
+
+      <div id="savedPortfolios" class="mt-8"></div>
 
       <div id="portfolioModal" class="modal-overlay hidden">
         <div class="modal-content">

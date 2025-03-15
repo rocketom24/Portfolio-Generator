@@ -59,8 +59,65 @@ function generatePortfolio() {
   console.log('Generating portfolio...');
 }
 
-function savePortfolio() {
-  console.log('Saving portfolio...');
+async function savePortfolio() {
+  const portfolioData = {
+    fullName: document.getElementById('fullName').value,
+    contactInfo: document.getElementById('contactInfo').value,
+    bio: document.getElementById('bio').value,
+    skills: document.getElementById('skills').value,
+    education: document.getElementById('education').value,
+    experience: document.getElementById('experience').value,
+    projects: document.getElementById('projects').value,
+    imagePreview: imagePreview
+  };
+
+  try {
+    const response = await fetch('http://localhost:5000/api/portfolios', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(portfolioData)
+    });
+
+    if (response.ok) {
+      console.log('Portfolio saved successfully');
+    } else {
+      console.error('Failed to save portfolio');
+    }
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
+async function fetchPortfolios() {
+  try {
+    const response = await fetch('http://localhost:5000/api/portfolios');
+    if (response.ok) {
+      const portfolios = await response.json();
+      displayPortfolios(portfolios);
+    } else {
+      console.error('Failed to fetch portfolios');
+    }
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
+function displayPortfolios(portfolios) {
+  const container = document.getElementById('savedPortfolios');
+  container.innerHTML = portfolios.map(portfolio => `
+    <div class="p-4 mb-4 bg-white/10 rounded-lg">
+      <h3 class="text-white font-medium">${portfolio.fullName}</h3>
+      <p class="text-white">${portfolio.contactInfo}</p>
+      <p class="text-white">${portfolio.bio}</p>
+      <p class="text-white">${portfolio.skills}</p>
+      <p class="text-white">${portfolio.education}</p>
+      <p class="text-white">${portfolio.experience}</p>
+      <p class="text-white">${portfolio.projects}</p>
+      ${portfolio.imagePreview ? `<img src="${portfolio.imagePreview}" alt="Profile" class="w-32 h-32 rounded-full object-cover border-4 border-white/30 shadow-lg">` : ''}
+    </div>
+  `).join('');
 }
 
 function downloadPDF() {
@@ -112,15 +169,14 @@ function updatePortfolioPreview() {
   const getValue = (id) => document.getElementById(id)?.value || 'Not provided';
 
   previewContainer.innerHTML = `
-        ${
-          imagePreview
-            ? `
+        ${imagePreview
+      ? `
             <div class="flex justify-center mb-6">
                 <img src="${imagePreview}" alt="Profile" class="w-40 h-40 rounded-full object-cover border-4 border-white/30 shadow-lg hover:border-pink-400/50 transition-all duration-300">
             </div>
         `
-            : ''
-        }
+      : ''
+    }
         <div>
             <h3 class="text-white/90 font-medium">Full Name</h3>
             <p class="text-white">${getValue('fullName')}</p>
