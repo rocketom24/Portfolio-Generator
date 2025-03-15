@@ -237,6 +237,22 @@
         </div>
       </div>
 
+      <div id="messageModal" class="modal-overlay hidden">
+        <div class="modal-content">
+          <h2 class="text-2xl font-bold text-white mb-6" id="messageModalTitle"></h2>
+          <p class="text-white" id="messageModalContent"></p>
+          <div class="flex justify-end gap-4 mt-6">
+            <button
+              type="button"
+              onclick="closeMessageModal()"
+              class="gradient-button px-6 py-3 text-white rounded-lg font-medium hover:scale-105"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+
       <div id="savedPortfoliosModal" class="modal-overlay hidden">
         <div class="modal-content max-h-96 overflow-y-auto">
           <h2 class="text-2xl font-bold text-white mb-6">Saved Portfolios</h2>

@@ -54,7 +54,37 @@ function updateImagePreview() {
 
 // Portfolio actions
 function generatePortfolio() {
-  console.log('Generating portfolio...');
+  const fullName = document.getElementById('fullName').value;
+  const contactInfo = document.getElementById('contactInfo').value;
+  const bio = document.getElementById('bio').value;
+  const skills = document.getElementById('skills').value;
+  const education = document.getElementById('education').value;
+  const experience = document.getElementById('experience').value;
+  const projects = document.getElementById('projects').value;
+
+  if (!fullName || !contactInfo || !bio || !skills || !education || !experience || !projects) {
+    showMessageModal('Warning', 'Please fill out all fields.');
+    return;
+  }
+
+  // Assuming validation is successful
+  showMessageModal('Success', 'Portfolio generated successfully.');
+}
+
+function showMessageModal(title, content) {
+  document.getElementById('messageModalTitle').textContent = title;
+  document.getElementById('messageModalContent').textContent = content;
+  const modal = document.getElementById('messageModal');
+  const contentDiv = modal.querySelector('.modal-content');
+  modal.classList.remove('hidden');
+  setTimeout(() => contentDiv.classList.add('show'), 10);
+}
+
+function closeMessageModal() {
+  const modal = document.getElementById('messageModal');
+  const contentDiv = modal.querySelector('.modal-content');
+  contentDiv.classList.remove('show');
+  setTimeout(() => modal.classList.add('hidden'), 300);
 }
 
 async function savePortfolio() {
