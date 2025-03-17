@@ -88,15 +88,28 @@ function closeMessageModal() {
 }
 
 async function savePortfolio() {
+  const fullName = document.getElementById('fullName').value;
+  const contactInfo = document.getElementById('contactInfo').value;
+  const bio = document.getElementById('bio').value;
+  const skills = document.getElementById('skills').value;
+  const education = document.getElementById('education').value;
+  const experience = document.getElementById('experience').value;
+  const projects = document.getElementById('projects').value;
+
+  if (!fullName || !contactInfo || !bio || !skills || !education || !experience || !projects) {
+    showMessageModal('Warning', 'Please fill out all fields.');
+    return;
+  }
+
   const portfolioData = {
-    fullName: document.getElementById('fullName').value,
-    contactInfo: document.getElementById('contactInfo').value,
-    bio: document.getElementById('bio').value,
-    skills: document.getElementById('skills').value,
-    education: document.getElementById('education').value,
-    experience: document.getElementById('experience').value,
-    projects: document.getElementById('projects').value,
-    imagePreview: imagePreview
+    fullName,
+    contactInfo,
+    bio,
+    skills,
+    education,
+    experience,
+    projects,
+    imagePreview
   };
 
   try {
@@ -111,11 +124,14 @@ async function savePortfolio() {
     if (response.ok) {
       const savedPortfolio = await response.json();
       console.log('Portfolio saved successfully:', savedPortfolio);
+      showMessageModal('Success', 'Portfolio saved successfully.');
     } else {
       console.error('Failed to save portfolio');
+      showMessageModal('Error', 'Failed to save portfolio.');
     }
   } catch (error) {
     console.error('Error:', error);
+    showMessageModal('Error', 'An error occurred while saving the portfolio.');
   }
 }
 
@@ -161,15 +177,32 @@ async function downloadPortfolioPDF(portfolioId) {
       const portfolio = await response.json();
       const element = document.createElement('div');
       element.innerHTML = `
-        <div>
-          <h3>${portfolio.fullName}</h3>
-          <p>${portfolio.contactInfo}</p>
-          <p>${portfolio.bio}</p>
-          <p>${portfolio.skills}</p>
-          <p>${portfolio.education}</p>
-          <p>${portfolio.experience}</p>
-          <p>${portfolio.projects}</p>
-          ${portfolio.imagePreview ? `<img src="${portfolio.imagePreview}" alt="Profile">` : ''}
+        <div style="font-family: 'Helvetica Neue', Arial, sans-serif; padding: 20px; max-width: 800px; margin: auto; border: 1px solid #ddd; border-radius: 10px; background-color: #f9f9f9;">
+          <div style="text-align: center; margin-bottom: 20px;">
+            <h1 style="color: #333; font-size: 2.5em; margin: 0;">${portfolio.fullName}</h1>
+            <p style="color: #777; font-size: 1.2em; margin: 0;">${portfolio.contactInfo}</p>
+          </div>
+          ${portfolio.imagePreview ? `<div style="text-align: center; margin: 20px 0;"><img src="${portfolio.imagePreview}" alt="Profile" style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 4px solid #ddd;"></div>` : ''}
+          <div style="margin: 20px 0;">
+            <h2 style="color: #333; border-bottom: 2px solid #ddd; padding-bottom: 5px;">Bio</h2>
+            <p style="color: #555; line-height: 1.6;">${portfolio.bio}</p>
+          </div>
+          <div style="margin: 20px 0;">
+            <h2 style="color: #333; border-bottom: 2px solid #ddd; padding-bottom: 5px;">Skills</h2>
+            <p style="color: #555; line-height: 1.6;">${portfolio.skills}</p>
+          </div>
+          <div style="margin: 20px 0;">
+            <h2 style="color: #333; border-bottom: 2px solid #ddd; padding-bottom: 5px;">Education</h2>
+            <p style="color: #555; line-height: 1.6;">${portfolio.education}</p>
+          </div>
+          <div style="margin: 20px 0;">
+            <h2 style="color: #333; border-bottom: 2px solid #ddd; padding-bottom: 5px;">Experience</h2>
+            <p style="color: #555; line-height: 1.6;">${portfolio.experience}</p>
+          </div>
+          <div style="margin: 20px 0;">
+            <h2 style="color: #333; border-bottom: 2px solid #ddd; padding-bottom: 5px;">Projects</h2>
+            <p style="color: #555; line-height: 1.6;">${portfolio.projects}</p>
+          </div>
         </div>
       `;
       const opt = {
