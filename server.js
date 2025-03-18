@@ -2,9 +2,15 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
+require('dotenv').config(); // Add this line to load environment variables
 
+
+console.log("Mongo URI:", process.env.MONGO_URI);
+console.log("JWT Secret:", process.env.JWT_SECRET);
 // Replace with your MongoDB Atlas connection string
-const mongoURI = 'mongodb+srv://tasmimdead:mangotas@cluster0.ead5r.mongodb.net/portfolioDB?retryWrites=true&w=majority&appName=Cluster0';
+const mongoURI = process.env.MONGO_URI;
 
 const app = express();
 app.use(bodyParser.json());
@@ -28,6 +34,15 @@ const portfolioSchema = new mongoose.Schema({
 });
 
 const Portfolio = mongoose.model('Portfolio', portfolioSchema);
+
+// Define Signup schema and model
+const signupSchema = new mongoose.Schema({
+    email: String,
+    password: String,
+    token: String
+});
+
+const SignupInfo = mongoose.model('SignupInfo', signupSchema);
 
 // API endpoint to save portfolio
 app.post('/api/portfolios', async (req, res) => {
@@ -58,6 +73,40 @@ app.get('/api/portfolios/:id', async (req, res) => {
             return res.status(404).send('Portfolio not found');
         }
         res.status(200).send(portfolio);
+    } catch (error) {
+        res.status(400).send(error);
+    }
+});
+
+// API endpoint to handle signup
+app.post('/api/signup', async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const newSignup = new SignupInfo({ email, password: hashedPassword });
+        await newSignup.save();
+        res.status(201).send(newSignup);
+    } catch (error) {
+        res.status(400).send(error);
+    }
+});
+
+// API endpoint to handle login
+app.post('/api/login', async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        const user = await SignupInfo.findOne({ email });
+        if (!user) {
+            return res.status(400).send('Invalid email or password');
+        }
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(400).send('Invalid email or password');
+        }
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        user.token = token;
+        await user.save();
+        res.status(200).send({ token });
     } catch (error) {
         res.status(400).send(error);
     }
