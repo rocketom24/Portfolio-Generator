@@ -97,18 +97,19 @@ app.post('/api/login', async (req, res) => {
         const { email, password } = req.body;
         const user = await SignupInfo.findOne({ email });
         if (!user) {
-            return res.status(400).send('Invalid email or password');
+            return res.status(400).send({ message: 'Invalid email or password' });
         }
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
-            return res.status(400).send('Invalid email or password');
+            return res.status(400).send({ message: 'Invalid email or password' });
         }
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
         user.token = token;
         await user.save();
         res.status(200).send({ token });
     } catch (error) {
-        res.status(400).send(error);
+        console.error('Error:', error);
+        res.status(500).send({ message: 'An error occurred while logging in. Please try again.' });
     }
 });
 

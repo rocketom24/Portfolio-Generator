@@ -26,7 +26,8 @@ async function login() {
             localStorage.setItem('token', data.token);
             window.location.href = 'index.html'; // Redirect to portfolio page
         } else {
-            alert('Failed to login. Please try again.');
+            const errorData = await response.json();
+            alert(errorData.message || 'Failed to login. Please try again.');
         }
     } catch (error) {
         console.error('Error:', error);

@@ -15,8 +15,16 @@
     class="min-h-screen bg-gradient-to-br from-purple-500 via-pink-500 to-red-500"
   >
     <script>
-      // Always redirect to signup page
-      window.location.href = 'signup.html';
+      // Check if the user is logged in
+      if (!localStorage.getItem('token')) {
+        // Redirect to signup page if not logged in
+        window.location.href = 'signup.html';
+      }
+
+      function logout() {
+        localStorage.removeItem('token');
+        window.location.href = 'signup.html';
+      }
     </script>
     <div class="container mx-auto px-4 py-8">
       <div class="text-center mb-12">
@@ -205,6 +213,27 @@
               </svg>
               Show Portfolio
             </button>
+            <button
+              type="button"
+              onclick="logout()"
+              class="gradient-button flex-1 px-6 py-3 text-white rounded-lg font-medium flex items-center justify-center gap-2 hover:scale-105"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-5 h-5"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="17 8 12 3 7 8"></polyline>
+                <line x1="12" y1="3" x2="12" y2="15"></line>
+              </svg>
+              Logout
+            </button>
           </div>
         </form>
       </div>
@@ -276,6 +305,13 @@
               reserved.
             </p>
           </div>
+          <button
+            type="button"
+            onclick="logout()"
+            class="gradient-button mt-4 px-6 py-3 text-white rounded-lg font-medium hover:scale-105"
+          >
+            Logout
+          </button>
         </div>
       </footer>
     </div>
